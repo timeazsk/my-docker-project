@@ -1,0 +1,37 @@
+version: "3.3"
+services:
+  nginx:
+    image: nginx:1.16.0-alpine
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./.htpasswd:/etc/nginx/.htpasswd:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - liferay
+
+  liferay:
+    image: liferay/dxp:7.4.11-ep2
+    container_name: liferay
+    depends_on:
+      - mysql
+    environment:
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_LASS_UPPERCASEN_AME: com.mysql.cj.jdbc.Driver
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL: "jdbc:mysql://mysql:3306/lportal?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME: admin
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD: password
+
+  mysql:
+    image: mysql:latest
+    hostname: mysql
+    container_name: mysql-container
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: lportal
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+    volumes:
+      - /var/lib/mysql
