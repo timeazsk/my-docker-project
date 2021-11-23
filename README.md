@@ -29,7 +29,15 @@ You can set different credentials in `.htpaswd` file.
 ## Run Application
 
 * Clone this repository
-* cd to
+```bash
+git clone https://github.com/timeazsk/my-docker-project.git
+```
+
+Change directory
+```bash
+cd my-docker-project
+```
+
 * Run command
 ```bash
 docker-compose up –d
